@@ -10,11 +10,56 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var tTableView: UITableView!
+    
+    var array: [Int] = [1, 2, 3, 4]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        let nib = UINib(nibName: "Cell", bundle: Bundle.main)
+        tTableView.register(nib, forCellReuseIdentifier: "Cell")
+        
+        tTableView.isEditing = true
+        tTableView.allowsMultipleSelectionDuringEditing = true
+        
+        
     }
 
 
 }
 
+
+extension ViewController: UITableViewDataSource {
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return array.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! Cell
+        
+        let str = String(format: "%02d", array[indexPath.row])
+        
+        cell.setCell(str: str)
+        
+        return cell
+        
+    }
+    
+    // indicateEditButton
+    func tableView(
+        _ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) ->UITableViewCell.EditingStyle
+    {
+        return UITableViewCell.EditingStyle.init(rawValue: 3)!
+    }
+    
+    // spaceOfEditIco
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPaht: IndexPath) -> Bool {
+        return true
+    }
+    
+    
+    
+}
